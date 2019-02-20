@@ -14,7 +14,7 @@ expose:
   - --v
   - 4
   config:
-    domain: infra.getjerry.com
+    domain: ing.getjerry.com
     exposer: Ingress
     http: "true"
 jenkins:
