@@ -5,7 +5,8 @@ cleanup:
     helm.sh/hook-delete-policy: hook-succeeded
   Args:
   - --cleanup
-controllerbuild: {}
+controllerbuild:
+  enabled: null
 expose:
   Annotations:
     helm.sh/hook: post-install,post-upgrade
@@ -23,4 +24,5 @@ jenkins:
       EnvVars:
         DOCKER_REGISTRY: 919341117301.dkr.ecr.us-west-2.amazonaws.com
         TILLER_NAMESPACE: kube-system
+  enabled: null
 prow: {}
