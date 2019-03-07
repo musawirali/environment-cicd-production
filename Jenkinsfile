@@ -30,7 +30,7 @@ pipeline {
             sh 'python encrypt64.py'
             sh 'pip install awscli'
             sh 'sops -d awscredentials.enc.env > awscredentials.env'
-            sh '. ./awscredentials.env; set -x && aws rds create-db-snapshot --db-instance-identifier jerry-stage-jx --db-snapshot-identifier $(echo "promotion@$(date \'+%m%d%Y-%H:%M:%S\')")'
+            sh '. ./awscredentials.env; set -x && aws rds create-db-snapshot --region us-west-2 --db-instance-identifier jerry-stage-jx --db-snapshot-identifier $(echo "promotion@$(date \'+%m%d%Y-%H:%M:%S\')")'
             sh 'jx step helm apply'
           }
         }
