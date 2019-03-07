@@ -30,6 +30,8 @@ pipeline {
             sh 'python encrypt64.py'
             sh 'pip install awscli'
             sh 'sops -d awscredentials.enc.env > awscredentials.env'
+            sh 'ls -alh'
+            sh 'echo $(cat awscredentials.env)'
             sh 'source awscredentials.env; set -x && aws rds create-db-snapshot --db-instance-identifier jerry-stage-jx --db-snapshot-identifier ${echo "promotion@$(date \'+%m%d%Y-%H:%M:%S\')"}'
             sh 'jx step helm apply'
           }
