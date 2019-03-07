@@ -36,13 +36,17 @@ pipeline {
       when {
         branch 'master'
       }
+      environment {
+        container('maven') {
+          dir('env') {
+            AWS_ACCESS_KEY_ID= sh (returnStdout: true, script: '. ./awscredentials.env && echo $AWS_ACCESS_KEY_ID').trim()
+            AWS_SECRET_ACCESS_KEY= sh (returnStdout: true, script: '. ./awscredentials.env && echo $AWS_SECRET_ACCESS_KEY').trim()
+          }
+        }
+      }
       steps {
         container('maven') {
           dir('env') {
-            environment {
-              AWS_ACCESS_KEY_ID= sh (returnStdout: true, script: '. ./awscredentials.env && echo $AWS_ACCESS_KEY_ID').trim()
-              AWS_SECRET_ACCESS_KEY= sh (returnStdout: true, script: '. ./awscredentials.env && echo $AWS_SECRET_ACCESS_KEY').trim()
-            }
             sh 'python encrypt64.py'
             sh 'pip install awscli'
             sh 'set -x && printenv && aws rds create-db-snapshot --region us-west-2 --db-instance-identifier jerry-stage-jx --db-snapshot-identifier $(echo "promotion-$(date \'+%m%d%Y-%H%M%S\')")'
