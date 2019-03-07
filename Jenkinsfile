@@ -31,6 +31,7 @@ pipeline {
             sh 'pip install awscli'
             sh 'sops -d awscredentials.enc.env > awscredentials.env'
             sh 'set -a && . ./awscredentials.env && set +a;'
+            sh 'printenv'
             sh 'set -x && aws rds create-db-snapshot --region us-west-2 --db-instance-identifier jerry-stage-jx --db-snapshot-identifier $(echo "promotion-$(date \'+%m%d%Y-%H%M%S\')")'
             sh 'jx step helm apply'
           }
