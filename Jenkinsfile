@@ -29,7 +29,7 @@ pipeline {
             sh 'sops -d secrets.enc.yaml > secrets.dec.yaml'
             sh 'python encrypt64.py'
             sh 'pip install awscli'
-            sh 'set -x && SNAPSHOT_ID="promotion-"$(date \'+%m%d%Y-%H%M%S\') && INSTANCE_ID=jerry-prod && aws rds create-db-snapshot --region us-west-2 --db-instance-identifier $INSTANCE_ID --db-snapshot-identifier $SNAPSHOT_ID && aws rds wait db-snapshot-completed --region us-west-2 --db-instance-identifier $INSTANCE_ID --db-snapshot-identifier $SNAPSHOT_ID'
+            sh 'set -x && SNAPSHOT_ID="promotion-"$(date \'+%m%d%Y-%H%M%S\') && INSTANCE_ID=jerry-stage-jx && aws rds create-db-snapshot --region us-west-2 --db-instance-identifier $INSTANCE_ID --db-snapshot-identifier $SNAPSHOT_ID && aws rds wait db-snapshot-completed --region us-west-2 --db-instance-identifier $INSTANCE_ID --db-snapshot-identifier $SNAPSHOT_ID'
             sh 'jx step helm apply'
           }
         }
