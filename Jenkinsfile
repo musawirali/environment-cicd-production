@@ -26,10 +26,9 @@ pipeline {
         container('maven') {
           dir('env') {
             sh 'wget https://github.com/mozilla/sops/releases/download/3.2.0/sops-3.2.0-1.x86_64.rpm && yum install -y sops-3.2.0-1.x86_64.rpm && rm sops-3.2.0-1.x86_64.rpm'
-            sh 'sops -d secrets.enc.yaml > secrets.dec.yaml'
-            sh 'python encrypt64.py'
-            sh 'pip install awscli'
-            sh 'set -x && SNAPSHOT_ID="promotion-"$(date \'+%m%d%Y-%H%M%S\') && INSTANCE_ID=jerry-stage-jx && aws rds create-db-snapshot --region us-west-2 --db-instance-identifier $INSTANCE_ID --db-snapshot-identifier $SNAPSHOT_ID && aws rds wait db-snapshot-completed --region us-west-2 --db-instance-identifier $INSTANCE_ID --db-snapshot-identifier $SNAPSHOT_ID'
+            sh 'sops -d jerry2jx-env-stage.enc.env > jerry2jx-env-stage.env'
+            sh 'sops -d aws-snapshot.enc.env > aws-snapshot.env'
+            sh 'python encrypt64.py jerry2jx-env-stage.env aws-snapshot.env'
             sh 'jx step helm apply'
           }
         }
