@@ -1,8 +1,7 @@
 import yaml
 import base64
-import sys
+import os
 
-env_file = sys.argv[1]
 
 def envParser(env_file):
   env_vars = {}
@@ -20,11 +19,18 @@ def envParser(env_file):
           env_vars[key] = base64.b64encode(str(value))
   return env_vars
 
-yaml_content = { "jerry2": { "secretValues": envParser(env_file) } }
 
-if len(sys.argv) > 2:
-  aws_snapshot_creds_file = sys.argv[2]
-  yaml_content["jerry2"]["rdsSnapshotCreds"] = envParser(aws_snapshot_creds_file)
+yaml_content = {}
+envs_dir = "envs"
+
+for file in os.listdir(envs_dir):
+    if file.endswith(".env"):
+        filename = os.path.splitext(file)[0]
+        app, section = filename.split('__')
+        if app in yaml_content:
+            yaml_content[app][section] = envParser(os.path.join(envs_dir, file))
+        else:
+            yaml_content[app] = {section: envParser(os.path.join(envs_dir, file))}
 
 with open('secrets.yaml', 'w') as outfile:
     yaml.dump(yaml_content, outfile, default_flow_style=False)

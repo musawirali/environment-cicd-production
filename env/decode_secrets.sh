@@ -1,2 +1,3 @@
-#!/bin/bash
-sops -d jerry2jx-env-prod.enc.env | sort  > jerry2jx-env-prod.env
+#!/bin/sh
+sops -d jerry2jx-env-prod.enc.env | sort  > ./envs/jerry2__secretValues.env
+sops -d aws-snapshot.enc.env | sort  > ./envs/jerry2__rdsSnapshotCreds.env

@@ -1,0 +1,1 @@
+> This directory is a place holder for files and is used to keep them when decrypting the environment variables
