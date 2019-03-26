@@ -4,3 +4,7 @@ jerry2:
       service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
       service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-west-2:919341117301:certificate/0a8c18d6-2173-4b6c-8049-0bcd1a5f2360
       service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+    elbannotationsAi:
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-west-2:919341117301:certificate/2d8a4d17-55e1-4282-a5a8-8eed4582fbfd
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
